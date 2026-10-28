@@ -28,7 +28,7 @@ const PAIRS = [
   { id: 'us9', kind: 'us', label: 'I', image: 'images/us/us9.jpg' },
 ];
 
-const MAX_MOVES = 34;          // win in 34 or fewer; the 35th move loses
+const MAX_MOVES = 37;          // win in 37 or fewer; the 38th move loses
 const EXCLAIM_EVERY = 3;       // the cat shouts something every 3 matches
 
 /* Things the cat shouts every 3 matches (Spanish, with the English underneath) */
