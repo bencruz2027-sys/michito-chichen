@@ -28,7 +28,41 @@ const PAIRS = [
   { id: 'us9', kind: 'us', label: 'I', image: 'images/us/us9.jpg' },
 ];
 
-const MAX_MOVES = 26;          // win in 26 or fewer ("under 27")
+const MAX_MOVES = 34;          // win in 34 or fewer; the 35th move loses
+const EXCLAIM_EVERY = 3;       // the cat shouts something every 3 matches
+
+/* Things the cat shouts every 3 matches (Spanish, with the English underneath) */
+const EXCLAMATIONS = [
+  ['¡Qué bien!', 'How great!'],
+  ['¡Genial!', 'Awesome!'],
+  ['¡Qué guay!', 'How cool!'],
+  ['¡Qué chévere!', 'How cool!'],
+  ['¡Qué padre!', 'How cool!'],
+  ['¡Qué chido!', 'Sweet!'],
+  ['¡Qué bacán!', 'Great!'],
+  ['¡Buena onda!', 'Good vibes!'],
+  ['¡Buenazo!', 'Really good!'],
+  ['¡Súper bien!', 'Super good!'],
+  ['¡Olé!', 'Hurrah!'],
+  ['¡Bravo!', 'Very good!'],
+  ['¡Viva!', 'Hooray!'],
+  ['¡Guau!', 'Wow!'],
+  ['¡Órale!', 'Right on!'],
+  ['¡Anda!', "You don't say!"],
+  ['¡Hala!', 'Come on!'],
+  ['¡Ñam! ¡Qué rico!', 'Yum! How delicious!'],
+  ['¡Qué divertido!', 'How fun!'],
+  ['¡Qué bonito!', 'How lovely!'],
+  ['¡Menos mal!', 'Thank goodness!'],
+  ['¡Qué suerte!', 'What luck!'],
+  ['¡Por fin!', 'Finally!'],
+  ['¡Dio en el clavo!', 'You nailed it!'],
+  ['No hay mal que por bien no venga.', 'Every cloud has a silver lining.'],
+  ['¡Me alegra el día!', 'That makes my day!'],
+  ['¡Me parece genial!', 'That sounds brilliant!'],
+  ['¡Vale la pena!', "It's worth it!"],
+  ['¡Viento en popa!', 'Smooth sailing!'],
+];
 const INK = '#5B3A2E';
 const GOLD = '#E0A82E';
 
@@ -44,6 +78,7 @@ const mochilaArt = $('#mochilaArt');
 const dock = $('#catDock');
 const catArt = $('#catArt');
 const tacosEl = $('#tacos');
+const exclaimEl = $('#exclaim');
 const soundBtn = $('#soundBtn');
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -123,6 +158,12 @@ const Sound = {
     if (!this.ok()) return;
     const t = this.ctx.currentTime;
     [784, 988, 1319].forEach((f, i) => this.tone(f, t + i * 0.07, 0.25, { type: 'triangle', vol: 0.15 }));
+  },
+  cheer() {
+    if (!this.ok()) return;
+    const t = this.ctx.currentTime;
+    [660, 880, 1175].forEach((f, i) => this.tone(f, t + i * 0.06, 0.16, { type: 'triangle', vol: 0.12 }));
+    this.tone(1568, t + 0.2, 0.3, { type: 'sine', vol: 0.08 });
   },
   wrong() {
     if (!this.ok()) return;
@@ -626,7 +667,8 @@ async function resolveTurn() {
     state.streak++;
     Sound.match();
     flyToMochila([a, b]);
-    if (state.streak >= 2) catEat(state.streak - 1);
+    if (state.matched % EXCLAIM_EVERY === 0 && state.matched < PAIRS.length) state.pendingExclaim = true;
+    catEat(state.streak);
     await wait(250);
   } else {
     state.streak = 0;
@@ -695,10 +737,11 @@ function flyToMochila(tiles) {
   });
 }
 
-/* ---------- Streak: the cat eats tacos ---------- */
+/* ---------- Every match: the cat eats tacos (one more for each match in a row) ---------- */
 async function catEat(count) {
   const token = ++eatToken;
   tacosEl.innerHTML = '';
+  hideExclaim();
   setCat('awake');
 
   const tacos = [];
@@ -737,13 +780,41 @@ async function catEat(count) {
   }
 
   setCat('awake');
-  await wait(1200);
+  if (state.pendingExclaim && !state.over) {
+    state.pendingExclaim = false;
+    await wait(150);
+    if (token !== eatToken) return;
+    showExclaim();
+    await wait(2600);
+    if (token !== eatToken) return;
+    hideExclaim();
+    await wait(300);
+  } else {
+    await wait(1200);
+  }
   if (token === eatToken && !state.over) setCat('sleeping');
+}
+
+/* ---------- The cat shouts a Spanish exclamation ---------- */
+let lastExclaim = -1;
+function showExclaim() {
+  let k;
+  do { k = Math.floor(Math.random() * EXCLAMATIONS.length); } while (k === lastExclaim && EXCLAMATIONS.length > 1);
+  lastExclaim = k;
+  const [es, en] = EXCLAMATIONS[k];
+  exclaimEl.innerHTML = `<b lang="es">${es}</b><span>${en}</span>`;
+  exclaimEl.classList.add('show');
+  Sound.cheer();
+}
+
+function hideExclaim() {
+  exclaimEl.classList.remove('show');
 }
 
 function stopEating() {
   eatToken++;
   tacosEl.innerHTML = '';
+  hideExclaim();
 }
 
 /* ---------- Lose ---------- */
@@ -815,7 +886,7 @@ function newGame() {
   Sound.stopSong();
   stopEating();
   document.querySelectorAll('.flyer').forEach((f) => f.remove());
-  Object.assign(state, { first: null, second: null, lock: false, over: false, matched: 0, streak: 0 });
+  Object.assign(state, { first: null, second: null, lock: false, over: false, matched: 0, streak: 0, pendingExclaim: false });
   setMoves(0, false);
   pairEl.textContent = '0';
   dock.classList.remove('center', 'talking');
@@ -829,6 +900,8 @@ function newGame() {
 }
 
 /* ---------- Boot ---------- */
+document.querySelector('.moves-max').textContent = `/${MAX_MOVES}`;
+document.querySelector('.hint').textContent = `Find all 18 pairs in ${MAX_MOVES} moves or fewer`;
 mochilaArt.innerHTML = MOCHILA_SVG;
 catArt.innerHTML = CAT_SVG;
 $('#restartBtn').addEventListener('click', newGame);

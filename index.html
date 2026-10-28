@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Michito Chichen</title>
-  <meta name="description" content="A cozy 6x6 matching game. Match all 18 pairs in 26 moves or fewer.">
+  <meta name="description" content="A cozy 6x6 matching game. Match all 18 pairs in 34 moves or fewer.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='12,26 14,4 30,18' fill='%23F6B26B'/%3E%3Cpolygon points='52,26 50,4 34,18' fill='%23F6B26B'/%3E%3Ccircle cx='32' cy='36' r='24' fill='%23F6B26B'/%3E%3Cpath d='M20 36 Q25 41 30 36 M34 36 Q39 41 44 36' stroke='%235B3A2E' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,14 +17,14 @@
     <div class="hud">
       <div class="moves" aria-live="polite">
         <span class="moves-label">Moves</span>
-        <span id="moveCount" class="moves-num">0</span><span class="moves-max">/26</span>
+        <span id="moveCount" class="moves-num">0</span><span class="moves-max">/34</span>
       </div>
       <button id="soundBtn" class="pill-btn" type="button" aria-pressed="true" aria-label="Sound on">
         <span class="snd-on">♪ on</span><span class="snd-off">♪ off</span>
       </button>
       <button id="restartBtn" class="pill-btn" type="button">New game</button>
     </div>
-    <p class="hint">Find all 18 pairs in 26 moves or fewer</p>
+    <p class="hint">Find all 18 pairs in 34 moves or fewer</p>
   </header>
 
   <main class="stage-wrap">
@@ -41,6 +41,7 @@
   <!-- Sleepy cat: bottom-right -->
   <div id="catDock" class="cat-dock sleeping">
     <div class="bubble" id="bubble" aria-live="polite">please try again, micho</div>
+    <div class="exclaim" id="exclaim" aria-live="polite"></div>
     <div class="zzz" aria-hidden="true"><span>z</span><span>z</span><span>Z</span></div>
     <div class="tacos" id="tacos" aria-hidden="true"></div>
     <div class="cat-art" id="catArt"></div>

@@ -321,6 +321,49 @@ body {
 }
 #tryAgainBtn { display: none; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); margin-top: 8px; white-space: nowrap; }
 
+/* Spanish exclamation every 3 matches */
+.exclaim {
+  position: absolute;
+  right: 6px;
+  bottom: calc(100% - 22px);
+  width: max-content;
+  max-width: min(240px, calc(100vw - 32px));
+  background: #fff;
+  border: 3px solid var(--lavender-deep);
+  border-radius: 18px;
+  padding: 8px 14px 7px;
+  text-align: center;
+  box-shadow: 0 4px 0 var(--lavender);
+  transform: scale(0) rotate(-6deg);
+  transform-origin: 70% 100%;
+  transition: transform 0.35s cubic-bezier(.3, 1.7, .5, 1);
+  z-index: 6;
+  pointer-events: none;
+}
+.exclaim.show { transform: scale(1) rotate(-2deg); }
+.exclaim b {
+  display: block;
+  font-family: 'Rye', serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.2;
+  color: var(--plum);
+}
+.exclaim span { display: block; font-size: 12px; font-weight: 800; color: #8A5A48; margin-top: 2px; }
+.exclaim::after {
+  content: '';
+  position: absolute;
+  right: 80px;
+  top: 100%;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-right: 3px solid var(--lavender-deep);
+  border-bottom: 3px solid var(--lavender-deep);
+  transform: translate(50%, -7px) rotate(45deg);
+}
+.cat-dock.awake .exclaim.show ~ .zzz { display: none; }
+
 .cat-dock.center {
   left: calc(50% - 88px);
   bottom: calc(50% - 60px);
@@ -453,6 +496,8 @@ body {
   .cat-dock.center { left: calc(50% - 73px); }
   .tacos { top: 56px; }
   .taco { width: 40px; }
+  .exclaim::after { right: 66px; }
+  .exclaim b { font-size: 17px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
