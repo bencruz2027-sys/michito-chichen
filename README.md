@@ -7,18 +7,15 @@ A cozy 6x6 matching game. Flip two tiles at a time and find all 18 pairs in 26 m
 - The cat in the bottom-right sleeps until you get matches in a row: 2 in a row earns one taco, 3 in a row earns two, and so on.
 - Win, and a band of mariachi cats plays you a song. Use your 27th move without finishing, and the tiles break away.
 
-## Adding the photos
+## Changing the photos
 
-The tiles currently show placeholders: **1–9** for the cat photos and **A–I** for the photos of us.
+The cat photos live in `images/cats/` and the photos of us in `images/us/`, as square crops. To swap one, replace the file, or point its `image` at a new file in the list at the top of `game.js`:
 
-1. Put the cat photos in `images/cats/` and the photos of us in `images/us/` (square-ish photos look best).
-2. Open `game.js` and fill in `image` for each pair at the top, for example:
+```js
+{ id: 'cat1', kind: 'cat', label: '1', image: 'images/cats/cat1.png' },
+```
 
-   ```js
-   { id: 'cat1', kind: 'cat', label: '1', image: 'images/cats/cat1.jpg' },
-   ```
-
-Any pair left with `image: ''` keeps its placeholder.
+Any pair with `image: ''` shows its placeholder instead (1–9 for cats, A–I for photos of us).
 
 ## Running it
 
