@@ -74,6 +74,35 @@ body {
 .moves-max { font-size: 14px; opacity: 0.85; }
 .moves.danger { background: var(--rose); color: #7A2033; }
 .moves.bump { animation: bump 0.35s ease; }
+.moves.bonus { animation: bonusGlow 1.2s ease; }
+.bonus-pop {
+  position: fixed;
+  z-index: 60;
+  transform: translateX(-50%);
+  background: var(--mint);
+  color: #0B5A43;
+  border: 3px solid #fff;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-family: 'Rye', serif;
+  font-size: 18px;
+  white-space: nowrap;
+  box-shadow: 0 4px 0 #6FD3AE;
+  pointer-events: none;
+  animation: bonusPop 1.9s cubic-bezier(.3, 1.6, .5, 1) forwards;
+}
+@keyframes bonusGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(167, 243, 208, 0); }
+  25% { box-shadow: 0 0 0 8px rgba(167, 243, 208, 0.9); transform: scale(1.15); }
+  60% { box-shadow: 0 0 0 4px rgba(167, 243, 208, 0.6); transform: scale(1); }
+}
+@keyframes bonusPop {
+  0% { transform: translateX(-50%) scale(0) rotate(-8deg); opacity: 0; }
+  18% { transform: translateX(-50%) scale(1.15) rotate(3deg); opacity: 1; }
+  30% { transform: translateX(-50%) scale(1) rotate(0); }
+  75% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-18px); opacity: 0; }
+}
 
 .pill-btn {
   font: inherit;

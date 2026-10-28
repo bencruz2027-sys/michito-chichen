@@ -11,7 +11,7 @@ const PAIRS = [
   { id: 'cat1', kind: 'cat', label: '1', image: 'images/cats/cat1.png' },
   { id: 'cat2', kind: 'cat', label: '2', image: 'images/cats/cat2.png' },
   { id: 'cat3', kind: 'cat', label: '3', image: 'images/cats/cat3.png' },
-  { id: 'cat4', kind: 'cat', label: '4', image: 'images/cats/cat4.png' },
+  { id: 'cat4', kind: 'cat', label: '4', image: 'images/cats/cat4.png', bonus: 3 }, // nugget cat: matching it takes 3 moves off
   { id: 'cat5', kind: 'cat', label: '5', image: 'images/cats/cat5.png' },
   { id: 'cat6', kind: 'cat', label: '6', image: 'images/cats/cat6.jpg' },
   { id: 'cat7', kind: 'cat', label: '7', image: 'images/cats/cat7.jpg' },
@@ -28,7 +28,7 @@ const PAIRS = [
   { id: 'us9', kind: 'us', label: 'I', image: 'images/us/us9.jpg' },
 ];
 
-const MAX_MOVES = 37;          // win in 37 or fewer; the 38th move loses
+const MAX_MOVES = 45;          // win in 45 or fewer; the 46th move loses
 const EXCLAIM_EVERY = 3;       // the cat shouts something every 3 matches
 
 /* Things the cat shouts every 3 matches (Spanish, with the English underneath) */
@@ -158,6 +158,12 @@ const Sound = {
     if (!this.ok()) return;
     const t = this.ctx.currentTime;
     [784, 988, 1319].forEach((f, i) => this.tone(f, t + i * 0.07, 0.25, { type: 'triangle', vol: 0.15 }));
+  },
+  bonus() {
+    if (!this.ok()) return;
+    const t = this.ctx.currentTime;
+    [1319, 1175, 1047].forEach((f, i) => this.tone(f, t + 0.15 + i * 0.08, 0.18, { type: 'square', vol: 0.05 }));
+    this.tone(1568, t + 0.42, 0.35, { type: 'triangle', vol: 0.12 });
   },
   cheer() {
     if (!this.ok()) return;
@@ -666,6 +672,8 @@ async function resolveTurn() {
     state.matched++;
     state.streak++;
     Sound.match();
+    const bonus = PAIRS.find((p) => p.id === a.dataset.id).bonus || 0;
+    if (bonus) giveBonus(bonus);
     flyToMochila([a, b]);
     if (state.matched % EXCLAIM_EVERY === 0 && state.matched < PAIRS.length) state.pendingExclaim = true;
     catEat(state.streak);
@@ -692,6 +700,24 @@ async function resolveTurn() {
   } else {
     state.lock = false;
   }
+}
+
+/* ---------- Bonus pair: take moves off the counter ---------- */
+function giveBonus(n) {
+  const taken = Math.min(n, state.moves);
+  setMoves(state.moves - taken);
+  movesBox.classList.remove('bonus');
+  void movesBox.offsetWidth;
+  movesBox.classList.add('bonus');
+  const pop = document.createElement('div');
+  pop.className = 'bonus-pop';
+  pop.textContent = `−${n} moves!`;
+  const r = movesBox.getBoundingClientRect();
+  pop.style.left = `${r.left + r.width / 2}px`;
+  pop.style.top = `${r.bottom + 6}px`;
+  document.body.appendChild(pop);
+  setTimeout(() => pop.remove(), 1900);
+  Sound.bonus();
 }
 
 /* ---------- Match: fly into mi mochila ---------- */

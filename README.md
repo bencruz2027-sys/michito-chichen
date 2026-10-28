@@ -1,11 +1,12 @@
 # Michito Chichen
 
-A cozy 6x6 matching game. Flip two tiles at a time and find all 18 pairs in 37 moves or fewer.
+A cozy 6x6 matching game. Flip two tiles at a time and find all 18 pairs in 45 moves or fewer.
 
 - Matched pairs fly into **mi mochila** (bottom-left).
 - Wrong guesses shake and flip back over.
+- Matching the nugget cat takes 3 moves off your count.
 - The cat in the bottom-right sleeps until you make a match. Every match feeds it a taco (one extra taco for each match in a row), and every 3 matches it shouts a Spanish exclamation.
-- Win, and a band of mariachi cats plays you a song. Use your 38th move without finishing, and the tiles break away.
+- Win, and a band of mariachi cats plays you a song. Use your 46th move without finishing, and the tiles break away.
 
 ## Changing the photos
 

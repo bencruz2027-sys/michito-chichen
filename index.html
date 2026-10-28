@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Michito Chichen</title>
-  <meta name="description" content="A cozy 6x6 matching game. Match all 18 pairs in 37 moves or fewer.">
+  <meta name="description" content="A cozy 6x6 matching game. Match all 18 pairs in 45 moves or fewer.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='12,26 14,4 30,18' fill='%23F6B26B'/%3E%3Cpolygon points='52,26 50,4 34,18' fill='%23F6B26B'/%3E%3Ccircle cx='32' cy='36' r='24' fill='%23F6B26B'/%3E%3Cpath d='M20 36 Q25 41 30 36 M34 36 Q39 41 44 36' stroke='%235B3A2E' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rye&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=202610272259">
+  <link rel="stylesheet" href="style.css?v=202610272312">
 </head>
 <body>
   <header class="topbar">
@@ -17,14 +17,14 @@
     <div class="hud">
       <div class="moves" aria-live="polite">
         <span class="moves-label">Moves</span>
-        <span id="moveCount" class="moves-num">0</span><span class="moves-max">/37</span>
+        <span id="moveCount" class="moves-num">0</span><span class="moves-max">/45</span>
       </div>
       <button id="soundBtn" class="pill-btn" type="button" aria-pressed="true" aria-label="Sound on">
         <span class="snd-on">♪ on</span><span class="snd-off">♪ off</span>
       </button>
       <button id="restartBtn" class="pill-btn" type="button">New game</button>
     </div>
-    <p class="hint">Find all 18 pairs in 37 moves or fewer</p>
+    <p class="hint">Find all 18 pairs in 45 moves or fewer</p>
   </header>
 
   <main class="stage-wrap">
@@ -48,6 +48,6 @@
     <button id="tryAgainBtn" class="pill-btn big" type="button">Play again</button>
   </div>
 
-  <script src="game.js?v=202610272259"></script>
+  <script src="game.js?v=202610272312"></script>
 </body>
 </html>
